@@ -1,15 +1,16 @@
 /////////////////////////////////////////////////////////////
 // Importaciones
 
-const {response, request} = require('express');
+const { response, request } = require('express');
+const { Usuarios } = require('../models/usuario');
 
 
 /////////////////////////////////////////////////////////////
 // Funciones Controllers de Usuario
 
-const usuarioGet = (req = request , res = response ) =>  {
+const usuarioGet = (req = request, res = response) => {
 
-    const {q ='', nombre = 'No Name', page = '0', limit = '1'} = req.query
+    const { q = '', nombre = 'No Name', page = '0', limit = '1' } = req.query
 
 
 
@@ -24,20 +25,22 @@ const usuarioGet = (req = request , res = response ) =>  {
 }
 
 
-const usuarioPost = (req, res) =>  {
+const usuarioPost = async(req, res) => {
 
-    const {nombre, edad} = req.body
+
+    const usuario = new Usuarios(req.body);
+    await usuario.save();
+
 
     res.status(201).json({
-        "Message": "Post Mil Fleurs",
-        "Nombre": nombre,
-        "Edad": edad
+        "Message": "POST /usuarios",
+        usuario
     });
 }
 
-const usuarioPut =  (req = request, res) =>  {
+const usuarioPut = (req = request, res) => {
 
-    
+
     const id = req.params.id;
 
 
@@ -47,14 +50,14 @@ const usuarioPut =  (req = request, res) =>  {
     });
 }
 
-const usuarioDelete = (req, res) =>  {
+const usuarioDelete = (req, res) => {
 
 
-    res.status(200).json({"Message": "Delete Mil Fleurs"});
+    res.status(200).json({ "Message": "Delete Mil Fleurs" });
 }
 
-const usuarioPath = (req, res) =>  {
-    res.json({"Message": "Patch v Mil Fleurs"});
+const usuarioPath = (req, res) => {
+    res.json({ "Message": "Patch v Mil Fleurs" });
 }
 
 
