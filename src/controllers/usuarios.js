@@ -38,6 +38,15 @@ const usuarioPost = async(req, res) => {
 
     }
 
+    //Validamos Correo
+    const existEmail = await Usuarios.findOne({ correo });
+    if (existEmail) {
+        return res.status(400).json({
+            msg: "The email exist. Please try with another one"
+        })
+    }
+
+
     //Encrypt
     const salt = bcryptjs.genSaltSync();
     usuarioObj.password = bcryptjs.hashSync(password, salt);

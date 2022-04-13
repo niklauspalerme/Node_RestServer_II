@@ -2,7 +2,8 @@
 // Importaciones y Requeriments
 
 
-const {Router} = require("express");
+const { Router } = require("express");
+const { check } = require("express-validator");
 const { usuarioGet, usuarioPost, usuarioPut, usuarioDelete, usuarioPath } = require("../controllers/usuarios");
 const router = Router();
 
@@ -13,7 +14,10 @@ const router = Router();
 
 router.get('/', usuarioGet);
 
-router.post('/',  usuarioPost);
+router.post('/', [
+    check('nombre', 'The name is empty').not().isEmpty(),
+    check('correo', 'The email is invalid').isEmail()
+], usuarioPost);
 
 router.put('/:id', usuarioPut);
 
