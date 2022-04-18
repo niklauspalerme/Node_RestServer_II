@@ -55,15 +55,27 @@ const usuarioPost = async(req, res) => {
     });
 }
 
-const usuarioPut = (req = request, res) => {
 
+//PUT /api/usuarios/:id
+const usuarioPut = async(req = request, res) => {
+
+    console.log("PUT /api/usuarios/:id");
 
     const id = req.params.id;
+    const { password, google, correo, ...resto } = req.body;
+
+    if (password) {
+        //Encrypt
+        const salt = bcryptjs.genSaltSync();
+        resto.password = bcryptjs.hashSync(password, salt);
+    }
+
+    const usuarioDB = await Usuarios.findByIdAndUpdate(id, resto)
 
 
     res.status(500).json({
         "Message": "Put Mil Fleurs",
-        id
+        usuarioDB
     });
 }
 
