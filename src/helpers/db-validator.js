@@ -3,6 +3,8 @@
 
 
 const { Roles } = require("../models/role");
+const { Usuarios } = require('../models/usuario');
+
 
 
 /////////////////////////////////////////////////////////////
@@ -17,11 +19,22 @@ const esRoleValido = async(rol = '') => {
 }
 
 
+const validarEmailRepetido = async(correo = '') => {
+
+
+    const existEmail = await Usuarios.findOne({ correo });
+    if (existEmail) {
+        throw new Error("The email exist. Please try with another one");
+    }
+}
+
+
 
 
 /////////////////////////////////////////////////////////////
 // Exportamos
 
 module.exports = {
-    esRoleValido
+    esRoleValido,
+    validarEmailRepetido
 }

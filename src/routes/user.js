@@ -5,8 +5,8 @@
 const { Router } = require("express");
 const { check } = require('express-validator');
 const { usuarioGet, usuarioPost, usuarioPut, usuarioDelete, usuarioPath } = require("../controllers/usuarios");
-const { esRoleValido } = require("../helpers/db-validator");
-const { validarCampos, validarEmailRepetido } = require("../middlewares/validar-campos");
+const { esRoleValido, validarEmailRepetido } = require("../helpers/db-validator");
+const { validarCampos } = require("../middlewares/validar-campos");
 const router = Router();
 
 
@@ -19,10 +19,10 @@ router.get('/', usuarioGet);
 router.post('/',
     check('nombre', 'The name is empty').not().isEmpty(),
     check('correo', 'The email is invalid').isEmail(),
+    check('correo').custom(validarEmailRepetido),
     check('password', 'The password must be more 6 characters').isLength({ min: 6 }),
     check('rol').custom(esRoleValido),
     validarCampos,
-    validarEmailRepetido,
     usuarioPost);
 
 router.put('/:id', usuarioPut);
