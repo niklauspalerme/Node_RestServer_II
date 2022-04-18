@@ -27,7 +27,7 @@ const usuarioGet = (req = request, res = response) => {
     });
 }
 
-
+//POST /api/usuarios
 const usuarioPost = async(req, res) => {
 
     console.log("POST /api/usuarios");
