@@ -15,15 +15,30 @@ const bcryptjs = require('bcryptjs');
 //GET /api/usuarios
 const usuarioGet = async (req = request, res = response) => {
 
-    const { page = '0', limit = '5', to = 0 } = req.query
-
     console.log("GET /api/usuarios");
-    const usuarios = await Usuarios.find()
-                                    .skip(to)
-                                    .limit(limit);
+
+
+    const { page = '0', limit = '5', to = 0 , estado = true} = req.query
+
+    //Opction #1
+    //Ejecutas una promesa y debe esperar que una termine para que se ejecute la otra
+    
+    /*
+    const usuarios = await Usuarios.find({estado}).skip(to).limit(limit);
+    const total = await Usuarios.countDocuments({estado}); // Total de registro en Mongo DB
+    */
+
+    //Option #2
+    //ejecutamos las promesas al mismo tiempo y esperemoas a que ambas finalicen 
+    const [total,usuarios] = await Promise.all([
+        Usuarios.countDocuments({estado}),
+        Usuarios.find({estado}).skip(to).limit(limit)
+
+    ])
 
     res.status(200).json({
         "Message": "GET /api/usuarios",
+        total,
         usuarios
     });
 }
