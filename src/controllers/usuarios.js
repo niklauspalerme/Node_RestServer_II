@@ -3,7 +3,6 @@
 
 const { response, request } = require('express');
 const { Usuarios } = require('../models/usuario');
-const { validationResult } = require('express-validator');
 const bcryptjs = require('bcryptjs');
 
 
@@ -11,21 +10,24 @@ const bcryptjs = require('bcryptjs');
 /////////////////////////////////////////////////////////////
 // Funciones Controllers de Usuario
 
-const usuarioGet = (req = request, res = response) => {
-
-    const { q = '', nombre = 'No Name', page = '0', limit = '1' } = req.query
 
 
+//GET /api/usuarios
+const usuarioGet = async (req = request, res = response) => {
 
+    const { page = '0', limit = '5', to = 0 } = req.query
+
+    console.log("GET /api/usuarios");
+    const usuarios = await Usuarios.find()
+                                    .skip(to)
+                                    .limit(limit);
 
     res.status(200).json({
-        "Message": "Mil Fleurs",
-        q,
-        nombre,
-        page,
-        limit
+        "Message": "GET /api/usuarios",
+        usuarios
     });
 }
+
 
 //POST /api/usuarios
 const usuarioPost = async(req, res) => {
