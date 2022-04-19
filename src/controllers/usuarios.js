@@ -62,7 +62,7 @@ const usuarioPut = async(req = request, res) => {
     console.log("PUT /api/usuarios/:id");
 
     const id = req.params.id;
-    const { password, google, correo, ...resto } = req.body;
+    const { _id, password, google, correo, ...resto } = req.body;
 
     if (password) {
         //Encrypt
@@ -73,7 +73,7 @@ const usuarioPut = async(req = request, res) => {
     const usuarioDB = await Usuarios.findByIdAndUpdate(id, resto)
 
 
-    res.status(500).json({
+    res.status(200).json({
         "Message": "Put Mil Fleurs",
         usuarioDB
     });

@@ -28,7 +28,16 @@ const validarEmailRepetido = async(correo = '') => {
     }
 }
 
+const existeUsuarioPorID = async (id) => {
 
+    const existID = await Usuarios.findById(id);
+    if (!existID) {
+        throw new Error("The id doesn't exist. Please try with another one");
+    }
+
+
+
+}
 
 
 /////////////////////////////////////////////////////////////
@@ -36,5 +45,6 @@ const validarEmailRepetido = async(correo = '') => {
 
 module.exports = {
     esRoleValido,
-    validarEmailRepetido
+    validarEmailRepetido,
+    existeUsuarioPorID
 }
